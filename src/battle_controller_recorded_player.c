@@ -415,6 +415,8 @@ static void RecordedPlayerHandleIntroTrainerBallThrow(u32 battler)
 
     if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
         trainerPicId = gLinkPlayers[GetBattlerMultiplayerId(battler)].gender + TRAINER_BACK_PIC_BRENDAN;
+    else if (gSaveBlock2Ptr->playerGender == NONBINARY)
+        trainerPicId = TRAINER_BACK_PIC_ENBY;
     else
         trainerPicId = gSaveBlock2Ptr->playerGender + TRAINER_BACK_PIC_BRENDAN;
 

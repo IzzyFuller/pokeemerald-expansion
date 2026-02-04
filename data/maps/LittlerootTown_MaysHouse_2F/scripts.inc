@@ -19,6 +19,7 @@ LittlerootTown_MaysHouse_2F_EventScript_CheckShouldUpdateMayPos::
 LittlerootTown_MaysHouse_2F_EventScript_TryUpdateMayPos::
 	checkplayergender
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_MaysHouse_2F_EventScript_Ret
+	goto_if_eq VAR_RESULT, NONBINARY, LittlerootTown_MaysHouse_2F_EventScript_Ret
 	goto_if_ge VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_MaysHouse_2F_EventScript_Ret
 	setobjectxyperm LOCALID_RIVALS_HOUSE_2F_RIVAL, 8, 2
 	setobjectmovementtype LOCALID_RIVALS_HOUSE_2F_RIVAL, MOVEMENT_TYPE_FACE_UP
@@ -43,6 +44,7 @@ LittlerootTown_MaysHouse_2F_OnWarp:
 LittlerootTown_MaysHouse_2F_EventScript_CheckInitDecor::
 	checkplayergender
 	goto_if_eq VAR_RESULT, FEMALE, SecretBase_EventScript_InitDecorations
+	goto_if_eq VAR_RESULT, NONBINARY, SecretBase_EventScript_InitDecorations
 	end
 
 LittlerootTown_MaysHouse_2F_EventScript_RivalsPokeBall::
@@ -239,6 +241,7 @@ RivalsHouse_2F_EventScript_Rival::
 	checkplayergender
 	goto_if_eq VAR_RESULT, MALE, RivalsHouse_2F_EventScript_May
 	goto_if_eq VAR_RESULT, FEMALE, RivalsHouse_2F_EventScript_Brendan
+	goto_if_eq VAR_RESULT, NONBINARY, RivalsHouse_2F_EventScript_Brendan
 	end
 
 RivalsHouse_2F_EventScript_May::
@@ -257,6 +260,7 @@ RivalsHouse_2F_EventScript_RivalPostLilycove::
 	checkplayergender
 	call_if_eq VAR_RESULT, MALE, RivalsHouse_2F_EventScript_MayPostLilycove
 	call_if_eq VAR_RESULT, FEMALE, RivalsHouse_2F_EventScript_BrendanPostLilycove
+	call_if_eq VAR_RESULT, NONBINARY, RivalsHouse_2F_EventScript_BrendanPostLilycove
 	setflag FLAG_MET_RIVAL_IN_HOUSE_AFTER_LILYCOVE
 	releaseall
 	end
@@ -284,6 +288,7 @@ LittlerootTown_MaysHouse_2F_EventScript_PC::
 	checkplayergender
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC
+	goto_if_eq VAR_RESULT, NONBINARY, LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC
 	end
 
 LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC::
