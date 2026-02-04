@@ -685,6 +685,7 @@ const u16 gPokedexOrder_Alphabetical[] =
     NATIONAL_DEX_PINECO,
     NATIONAL_DEX_PINSIR,
     NATIONAL_DEX_PIPLUP,
+    NATIONAL_DEX_PIQUSELLE,
     NATIONAL_DEX_PLUSLE,
     NATIONAL_DEX_POIPOLE,
     NATIONAL_DEX_POLITOED,
@@ -1530,7 +1531,15 @@ const u16 gPokedexOrder_Weight[] =
     //NATIONAL_DEX_FLORGES_ORANGE,
     //NATIONAL_DEX_FLORGES_BLUE,
     //NATIONAL_DEX_FLORGES_WHITE,
-    // 22.3 lbs / 10.1 kg
+    // 22.0 lbs / 10.0 kg
+    // 22.0 lbs / 10.0 kg
+    // 22.0 lbs / 10.0 kg
+    // 22.0 lbs / 10.0 kg
+    // 22.0 lbs / 10.0 kg
+    // 22.0 lbs / 10.0 kg
+    NATIONAL_DEX_PIQUSELLE,
+    // 22.0 lbs / 10.0 kg
+// 22.3 lbs / 10.1 kg
     NATIONAL_DEX_PURRLOIN,
     // 22.5 lbs / 10.2 kg
     NATIONAL_DEX_TURTWIG,
@@ -2028,7 +2037,8 @@ const u16 gPokedexOrder_Weight[] =
     NATIONAL_DEX_VAROOM,
     NATIONAL_DEX_GREAVARD,
     NATIONAL_DEX_IRON_VALIANT,
-    // 77.8 lbs / 35.3 kg
+    // 77.2 lbs / 35.0 kg
+// 77.8 lbs / 35.3 kg
     NATIONAL_DEX_CLAWITZER,
     // 78.3 lbs / 35.5 kg
     NATIONAL_DEX_MIENSHAO,
@@ -3608,7 +3618,15 @@ const u16 gPokedexOrder_Height[] =
     NATIONAL_DEX_LOKIX,
     NATIONAL_DEX_VAROOM,
     NATIONAL_DEX_MUNKIDORI,
-    // 3'07" / 1.1m
+    // 3'03" / 1.0m
+    // 3'03" / 1.0m
+    // 3'03" / 1.0m
+    // 3'03" / 1.0m
+    // 3'03" / 1.0m
+    // 3'03" / 1.0m
+    NATIONAL_DEX_PIQUSELLE,
+    // 3'03" / 1.0m
+// 3'07" / 1.1m
     NATIONAL_DEX_CHARMELEON,
     NATIONAL_DEX_BUTTERFREE,
     NATIONAL_DEX_PIDGEOTTO,
@@ -3837,7 +3855,8 @@ const u16 gPokedexOrder_Height[] =
     NATIONAL_DEX_FLUTTER_MANE,
     NATIONAL_DEX_IRON_VALIANT,
     NATIONAL_DEX_FEZANDIPITI,
-    // 4'11" / 1.5m
+    // 4'07" / 1.4m
+// 4'11" / 1.5m
     NATIONAL_DEX_PIDGEOT,
     NATIONAL_DEX_VENOMOTH,
     NATIONAL_DEX_ALAKAZAM,

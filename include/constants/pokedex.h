@@ -1040,6 +1040,8 @@ enum NationalDexOrder
     NATIONAL_DEX_IRON_CROWN,
     NATIONAL_DEX_TERAPAGOS,
     NATIONAL_DEX_PECHARUNT,
+                        // Custom Pokemon
+    NATIONAL_DEX_PIQUSELLE,
 };
 
 #define KANTO_DEX_COUNT     NATIONAL_DEX_MEW
@@ -1332,7 +1334,7 @@ enum HoennDexOrder
 enum
 {
     DEX_MODE_HOENN,
-    DEX_MODE_NATIONAL
+    DEX_MODE_NATIONAL,
 };
 
 enum

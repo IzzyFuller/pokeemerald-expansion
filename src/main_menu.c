@@ -406,8 +406,8 @@ static const struct WindowTemplate sNewGameBirchSpeechTextWindows[] =
         .bg = 0,
         .tilemapLeft = 3,
         .tilemapTop = 5,
-        .width = 6,
-        .height = 4,
+        .width = 10,
+        .height = 6,
         .paletteNum = 15,
         .baseBlock = 0x6D
     },
@@ -473,8 +473,9 @@ static const union AffineAnimCmd *const sSpriteAffineAnimTable_PlayerShrink[] =
 };
 
 static const struct MenuAction sMenuActions_Gender[] = {
-    {COMPOUND_STRING("BOY"), {NULL}},
-    {COMPOUND_STRING("GIRL"), {NULL}}
+    {COMPOUND_STRING("HE/HIM"), {NULL}},
+    {COMPOUND_STRING("SHE/HER"), {NULL}},
+    {COMPOUND_STRING("THEY/THEM"), {NULL}}
 };
 
 static const u8 *const sMalePresetNames[] = {
@@ -523,9 +524,32 @@ static const u8 *const sFemalePresetNames[] = {
     COMPOUND_STRING("HALIE")
 };
 
-// The number of male vs. female names is assumed to be the same.
-// If they aren't, the smaller of the two sizes will be used and any extra names will be ignored.
-#define NUM_PRESET_NAMES min(ARRAY_COUNT(sMalePresetNames), ARRAY_COUNT(sFemalePresetNames))
+static const u8 *const sNonbinaryPresetNames[] = {
+    COMPOUND_STRING("ALEX"),
+    COMPOUND_STRING("SAGE"),
+    COMPOUND_STRING("RIVER"),
+    COMPOUND_STRING("QUINN"),
+    COMPOUND_STRING("AVERY"),
+    COMPOUND_STRING("ROWAN"),
+    COMPOUND_STRING("FINLEY"),
+    COMPOUND_STRING("SKYLER"),
+    COMPOUND_STRING("DAKOTA"),
+    COMPOUND_STRING("REESE"),
+    COMPOUND_STRING("EMERY"),
+    COMPOUND_STRING("BLAIR"),
+    COMPOUND_STRING("SHAY"),
+    COMPOUND_STRING("MORGAN"),
+    COMPOUND_STRING("KENDALL"),
+    COMPOUND_STRING("CAREY"),
+    COMPOUND_STRING("REMY"),
+    COMPOUND_STRING("PHOENIX"),
+    COMPOUND_STRING("TAYLOR"),
+    COMPOUND_STRING("JAMIE")
+};
+
+// The number of preset names is assumed to be the same across all genders.
+// If they aren't, the smaller of the sizes will be used and any extra names will be ignored.
+#define NUM_PRESET_NAMES min(min(ARRAY_COUNT(sMalePresetNames), ARRAY_COUNT(sFemalePresetNames)), ARRAY_COUNT(sNonbinaryPresetNames))
 
 enum
 {
@@ -1281,6 +1305,7 @@ static void HighlightSelectedMainMenuItem(u8 menuType, u8 selectedMenuItem, s16 
 #define tLotadSpriteId data[9]
 #define tBrendanSpriteId data[10]
 #define tMaySpriteId data[11]
+#define tEnbySpriteId data[12]
 
 static void Task_NewGameBirchSpeech_Init(u8 taskId)
 {
@@ -1394,7 +1419,7 @@ static void Task_NewGameBirchSpeechSub_InitPokeBall(u8 taskId)
     gSprites[spriteId].invisible = FALSE;
     gSprites[spriteId].data[0] = 0;
 
-    CreatePokeballSpriteToReleaseMon(spriteId, gSprites[spriteId].oam.paletteNum, 112, 58, 0, 0, 32, PALETTES_BG, SPECIES_LOTAD);
+    CreatePokeballSpriteToReleaseMon(spriteId, gSprites[spriteId].oam.paletteNum, 112, 58, 0, 0, 32, PALETTES_BG, SPECIES_PIQUSELLE);
     gTasks[taskId].func = Task_NewGameBirchSpeechSub_WaitForLotad;
     gTasks[sBirchSpeechMainTaskId].tTimer = 0;
 }
@@ -1537,6 +1562,12 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
             gTasks[taskId].func = Task_NewGameBirchSpeech_WhatsYourName;
             break;
+        case NONBINARY:
+            PlaySE(SE_SELECT);
+            gSaveBlock2Ptr->playerGender = gender;
+            NewGameBirchSpeech_ClearGenderWindow(1, 1);
+            gTasks[taskId].func = Task_NewGameBirchSpeech_WhatsYourName;
+            break;
     }
     gender2 = Menu_GetCursorPos();
     if (gender2 != gTasks[taskId].tPlayerGender)
@@ -1558,10 +1589,12 @@ static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8 taskId)
     else
     {
         gSprites[spriteId].invisible = TRUE;
-        if (gTasks[taskId].tPlayerGender != MALE)
+        if (gTasks[taskId].tPlayerGender == MALE)
+            spriteId = gTasks[taskId].tBrendanSpriteId;
+        else if (gTasks[taskId].tPlayerGender == FEMALE)
             spriteId = gTasks[taskId].tMaySpriteId;
         else
-            spriteId = gTasks[taskId].tBrendanSpriteId;
+            spriteId = gTasks[taskId].tEnbySpriteId;
         gSprites[spriteId].x = DISPLAY_WIDTH;
         gSprites[spriteId].y = 60;
         gSprites[spriteId].invisible = FALSE;
@@ -1682,6 +1715,7 @@ static void Task_NewGameBirchSpeech_ReshowBirchLotad(u8 taskId)
     {
         gSprites[gTasks[taskId].tBrendanSpriteId].invisible = TRUE;
         gSprites[gTasks[taskId].tMaySpriteId].invisible = TRUE;
+        gSprites[gTasks[taskId].tEnbySpriteId].invisible = TRUE;
         spriteId = gTasks[taskId].tBirchSpriteId;
         gSprites[spriteId].x = 136;
         gSprites[spriteId].y = 60;
@@ -1732,10 +1766,12 @@ static void Task_NewGameBirchSpeech_AreYouReady(u8 taskId)
             gTasks[taskId].tTimer--;
             return;
         }
-        if (gSaveBlock2Ptr->playerGender != MALE)
+        if (gSaveBlock2Ptr->playerGender == MALE)
+            spriteId = gTasks[taskId].tBrendanSpriteId;
+        else if (gSaveBlock2Ptr->playerGender == FEMALE)
             spriteId = gTasks[taskId].tMaySpriteId;
         else
-            spriteId = gTasks[taskId].tBrendanSpriteId;
+            spriteId = gTasks[taskId].tEnbySpriteId;
         gSprites[spriteId].x = 120;
         gSprites[spriteId].y = 60;
         gSprites[spriteId].invisible = FALSE;
@@ -1843,15 +1879,20 @@ static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
     FreeAllSpritePalettes();
     ResetAllPicSprites();
     AddBirchSpeechObjects(taskId);
-    if (gSaveBlock2Ptr->playerGender != MALE)
+    if (gSaveBlock2Ptr->playerGender == MALE)
+    {
+        gTasks[taskId].tPlayerGender = MALE;
+        spriteId = gTasks[taskId].tBrendanSpriteId;
+    }
+    else if (gSaveBlock2Ptr->playerGender == FEMALE)
     {
         gTasks[taskId].tPlayerGender = FEMALE;
         spriteId = gTasks[taskId].tMaySpriteId;
     }
     else
     {
-        gTasks[taskId].tPlayerGender = MALE;
-        spriteId = gTasks[taskId].tBrendanSpriteId;
+        gTasks[taskId].tPlayerGender = NONBINARY;
+        spriteId = gTasks[taskId].tEnbySpriteId;
     }
     gSprites[spriteId].x = 180;
     gSprites[spriteId].y = 60;
@@ -1896,7 +1937,7 @@ static void SpriteCB_MovePlayerDownWhileShrinking(struct Sprite *sprite)
 
 static u8 NewGameBirchSpeech_CreateLotadSprite(u8 x, u8 y)
 {
-    return CreateMonPicSprite_Affine(SPECIES_LOTAD, FALSE, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
+    return CreateMonPicSprite_Affine(SPECIES_PIQUSELLE, FALSE, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
 }
 
 static void AddBirchSpeechObjects(u8 taskId)
@@ -1926,6 +1967,11 @@ static void AddBirchSpeechObjects(u8 taskId)
     gSprites[maySpriteId].invisible = TRUE;
     gSprites[maySpriteId].oam.priority = 0;
     gTasks[taskId].tMaySpriteId = maySpriteId;
+    u8 enbySpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_ENBY), 120, 60, 0, NULL);
+    gSprites[enbySpriteId].callback = SpriteCB_Null;
+    gSprites[enbySpriteId].invisible = TRUE;
+    gSprites[enbySpriteId].oam.priority = 0;
+    gTasks[taskId].tEnbySpriteId = enbySpriteId;
 }
 
 #undef tPlayerSpriteId
@@ -1935,6 +1981,7 @@ static void AddBirchSpeechObjects(u8 taskId)
 #undef tLotadSpriteId
 #undef tBrendanSpriteId
 #undef tMaySpriteId
+#undef tEnbySpriteId
 
 #define tMainTask data[0]
 #define tAlphaCoeff1 data[1]
@@ -2130,8 +2177,10 @@ void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
 
     if (gSaveBlock2Ptr->playerGender == MALE)
         name = sMalePresetNames[nameId];
-    else
+    else if (gSaveBlock2Ptr->playerGender == FEMALE)
         name = sFemalePresetNames[nameId];
+    else
+        name = sNonbinaryPresetNames[nameId];
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
         gSaveBlock2Ptr->playerName[i] = name[i];
     gSaveBlock2Ptr->playerName[PLAYER_NAME_LENGTH] = EOS;

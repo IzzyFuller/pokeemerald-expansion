@@ -35921,3 +35921,6 @@ static const u16 sPecharuntTeachableLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #endif //P_FAMILY_PECHARUNT
+
+// Custom Pokemon
+#include "teachable_learnsets_custom.h"
